@@ -5,6 +5,7 @@
         "xiosbase": "c",
         "xlocale": "c",
         "xutility": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "vec2.h": "c"
     }
 }

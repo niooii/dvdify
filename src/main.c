@@ -21,6 +21,14 @@ typedef struct WindowInfo {
 unsigned int found_win_count = 0;
 int max_win_count = 32;
 
+long long get_milliseconds() {
+  LARGE_INTEGER freq;
+  QueryPerformanceFrequency(&freq);
+  LARGE_INTEGER counter_now;
+  QueryPerformanceCounter(&counter_now);
+  return (1000LL * counter_now.QuadPart) / freq.QuadPart;
+}
+
 // EnumWindows accepts a callback function to run on each window found:
 BOOL window_callback(HWND hwnd, LPARAM lParam)
 {
@@ -91,6 +99,7 @@ int main(int argc, char *argv[])
         }
     }
     
+    // Store window in window for easy access
     WindowInfo* window = &window_arr[win_selection];
 #ifdef ENABLE_DEBUG
     printf("Window selected: %s", window->window_name);
@@ -101,14 +110,26 @@ int main(int argc, char *argv[])
         .y = 0
     };
 
+    ShowWindow(window->handle, SW_SHOWNORMAL);
+
+    RECT window_rect;
+    GetWindowRect(window->handle, &window_rect);
+    current_window_pos.x = window_rect.left;
+    current_window_pos.y = window_rect.top;
+
+#ifdef ENABLE_DEBUG
+    printf("Current window coordinates [x:%f] [y:%f]", current_window_pos.x, current_window_pos.y);
+#endif
+
     // A LOT OF WINDOWS API SHIT
     // TODO! get current window pos and store in the vec2
 
-    while (1)
-    {
-        // move window places
-        i have to restart my computer
-    }
+    // while (1)
+    // {
+    //     float dt = 3.f;
+    //     // move window places
+        
+    // }
 
     return 0;
 }
