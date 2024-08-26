@@ -1,5 +1,10 @@
 {
     "files.associations": {
-        "sstream": "c"
+        "sstream": "c",
+        "algorithm": "c",
+        "xiosbase": "c",
+        "xlocale": "c",
+        "xutility": "c",
+        "stdio.h": "c"
     }
 }

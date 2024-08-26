@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <Windows.h>
+#include "vec2.h"
 #define ENABLE_DEBUG
 
-#define MAX_WINDOW_COUNT 128
 #define MAX_WINDOW_TITLE_LEN 64
 /*
  * my plan is right
@@ -12,18 +12,20 @@
  * then validate selection so no segfault
  * then bounmce window around
 */
-
 typedef struct WindowInfo {
   HWND handle;
   char* window_name;
 } WindowInfo;
 
-unsigned short found_window_count = 0;
+// Globals
+unsigned int found_win_count = 0;
+int max_win_count = 32;
+
 // EnumWindows accepts a callback function to run on each window found:
 BOOL window_callback(HWND hwnd, LPARAM lParam)
 {
     WindowInfo* window_info_arr = (WindowInfo*)lParam;
-    if (found_window_count >= MAX_WINDOW_COUNT)
+    if (found_win_count >= max_win_count)
     {
         printf("TOO MANY WINDOWS \n");
         return FALSE;
@@ -44,38 +46,69 @@ BOOL window_callback(HWND hwnd, LPARAM lParam)
 
     // Set the name of the window in the struct
     // Increment found_window_count
-    window_info_arr[found_window_count].handle = hwnd;
-    window_info_arr[found_window_count].window_name = window_name;
-    ++found_window_count;
+    window_info_arr[found_win_count].handle = hwnd;
+    window_info_arr[found_win_count].window_name = window_name;
+    ++found_win_count;
     return TRUE;
 }
 
 int main(int argc, char *argv[]) 
 {
-    printf("hi world\n");
-    // List windows and shit
-    // EnumWindows();
-    // Accepts a format modifier (in this case %s is string, to accept integer do %d, accept float is %f etc) 
-    // BUT..
-    // where is the value stored?? u maybe asking,,,
-    // we must allocate MEMORY for it first !
-    // NO WTF
-    // Max input size of 200
-    int input;
-    printf("input A NUMBER..: ");
-    scanf("%d", &input);
+    printf("Enter window scan limit: ");
+    scanf("%d", &max_win_count);
 
 #ifdef ENABLE_DEBUG
-    printf("user inputted: %d", input);
+    printf("Max Windows Limit: %d", max_win_count);
 #endif
-    WindowInfo window_info_arr[MAX_WINDOW_COUNT]; 
-    EnumWindows(window_callback, (LPARAM)window_info_arr);
+    WindowInfo window_arr[max_win_count]; 
+    EnumWindows(window_callback, (LPARAM)window_arr);
     
     // Print options menu:
     // 0 - Mail
     // 1 - Settings
     // ....
-    for
+    
+
+    unsigned int win_selection = 0;
+    printf("\nPlease attempt to select one of the windows from the following list of window options listed" 
+    " below in the accompanying input prompt using your keyboard by entering the number on the left of the" 
+    " hyphen that corresponds to the window title:");
+    
+    for(int window = 0; window < found_win_count; window++)
+    {
+        printf("\n%d - %s", window, window_arr[window].window_name);
+    }
+
+    //Get Window Selection Number
+    while(TRUE)
+    {
+        printf("\nPlease enter a window selection: ");
+        scanf("%u", &win_selection);
+
+        if(win_selection < found_win_count)
+        {
+            break;
+        }
+    }
+    
+    WindowInfo* window = &window_arr[win_selection];
+#ifdef ENABLE_DEBUG
+    printf("Window selected: %s", window->window_name);
+#endif
+
+    Vec2 current_window_pos = {
+        .x = 0,
+        .y = 0
+    };
+
+    // A LOT OF WINDOWS API SHIT
+    // TODO! get current window pos and store in the vec2
+
+    while (1)
+    {
+        // move window places
+        i have to restart my computer
+    }
 
     return 0;
 }
