@@ -9,7 +9,7 @@ typedef struct FRect {
 } FRect;
 
 
-FRect frect_from_winrect(RECT in)
+inline FRect frect_from_winrect(RECT in)
 {
     // This is struct initialization syntax, very cool
     FRect f = {

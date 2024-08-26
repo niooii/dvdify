@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "FRect.h"
+#include "frect.h"
 #include "util.h"
 #define ENABLE_DEBUG
 
@@ -73,10 +73,6 @@ int main(int argc, char *argv[])
     RECT window_rect;
     GetWindowRect(window->handle, &window_rect);
 
-#ifdef ENABLE_DEBUG
-    printf("Current window coordinates [x:%f] [y:%f]", window_rect.left, window_rect.top);
-#endif
-
     // A LOT OF WINDOWS API SHIT
     // TODO! get current window pos and store in the vec2
     // What are we doing chat
@@ -88,6 +84,12 @@ int main(int argc, char *argv[])
         .y = rand() % 20 + 20
     };
     FRect win_rect = frect_from_winrect(window_rect);
+
+#ifdef ENABLE_DEBUG
+    printf("\nCurrent window coordinates [x:%f] [y:%f]", win_rect.top_left.x, win_rect.top_left.y);
+    printf("\nWidth and Height [w:%f] [h:%f]", win_rect.w, win_rect.h);
+#endif
+
     while (1)
     {
         // K YOURSELF NOW !! 
@@ -105,7 +107,7 @@ int main(int argc, char *argv[])
 
         // TODO! CHECK IF lower bound of window is greater than resolution
         
-        SetWindowPos(window->handle, NULL, win_rect.top_left.x, win_rect.top_left.y, 0, 0, 0);
+        SetWindowPos(window->handle, NULL, win_rect.top_left.x, win_rect.top_left.y, win_rect.w, win_rect.h, 0);
     }
 
     return 0;
