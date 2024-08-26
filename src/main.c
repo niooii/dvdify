@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include <Windows.h>
-#include "vec2.h"
+#include "FRect.h"
+#include "util.h"
 #define ENABLE_DEBUG
 
 #define MAX_WINDOW_TITLE_LEN 64
@@ -62,6 +62,7 @@ BOOL window_callback(HWND hwnd, LPARAM lParam)
 
 int main(int argc, char *argv[]) 
 {
+    utils_init();
     printf("Enter window scan limit: ");
     scanf("%d", &max_win_count);
 
@@ -104,32 +105,49 @@ int main(int argc, char *argv[])
 #ifdef ENABLE_DEBUG
     printf("Window selected: %s", window->window_name);
 #endif
-
-    Vec2 current_window_pos = {
-        .x = 0,
-        .y = 0
-    };
-
+// STAGE 4
     ShowWindow(window->handle, SW_SHOWNORMAL);
 
     RECT window_rect;
     GetWindowRect(window->handle, &window_rect);
-    current_window_pos.x = window_rect.left;
-    current_window_pos.y = window_rect.top;
 
 #ifdef ENABLE_DEBUG
-    printf("Current window coordinates [x:%f] [y:%f]", current_window_pos.x, current_window_pos.y);
+    printf("Current window coordinates [x:%f] [y:%f]", window_rect.left, window_rect.top);
 #endif
 
     // A LOT OF WINDOWS API SHIT
     // TODO! get current window pos and store in the vec2
-
-    // while (1)
-    // {
-    //     float dt = 3.f;
-    //     // move window places
+    // What are we doing chat
+    double old_time = get_absolute_time();
+    
+    Vec2 velocity = {
+        .x = rand() % 20,
+        .y = rand() % 20
+    };
+    while (1)
+    {
+        // K YOURSELF NOW !! 
+        float dt = (get_absolute_time() - old_time)*9.81; // why tho its in seconds already
+        old_time = get_absolute_time();
+        // printf("deltatime: %lf\n", dt);
         
-    // }
+        // move window places
+        
+        // kinematicm oment
+        float dx = velocity.x * dt;
+        float dy = velocity.y * dt;
+        // ur gonna lose a shit ton of presicion if u cast all ur immediate calculations to int btw watch otu
+        // bc dx and dy will always be near 0 whe nu cast it it becomes 0 and ur adding NOTHING !
+        // ideal solution is to store the position of window as a float for x and y then cast it when u set the window position
+        window_rect.left += dx;
+        window_rect.top += dy;
+        #def
+
+        // CHECK IF lower bound of window is greater than resolution
+        
+        SetWindowPos(window->handle, NULL, window_rect.left, window_rect.top, 0, 0, 0);
+        // FOR DEBUG
+    }
 
     return 0;
 }
