@@ -120,17 +120,11 @@ int main(int argc, char *argv[])
         {
             win_rect.top_left.x = 0;
 
-            vel.x = new_speed_variance;
-            vel.y = SPEED_RANDOMNESS - new_speed_variance;
-
             vel.x *= -1;
         }
 
         if (win_rect.top_left.x + win_rect.w >= screen_w){
             win_rect.top_left.x = screen_w - win_rect.w;
-
-            vel.x = new_speed_variance;
-            vel.y = SPEED_RANDOMNESS - new_speed_variance;
 
             vel.x *= -1;
         }
@@ -139,17 +133,11 @@ int main(int argc, char *argv[])
         {
             win_rect.top_left.y = 0;
 
-            vel.x = new_speed_variance;
-            vel.y = SPEED_RANDOMNESS - new_speed_variance;
-
             vel.y *= -1;
         }
 
         if (win_rect.top_left.y + win_rect.h >= screen_h){
             win_rect.top_left.y = screen_h - win_rect.h;
-
-            vel.x = new_speed_variance;
-            vel.y = SPEED_RANDOMNESS - new_speed_variance;
 
             vel.y *= -1;
         }
