@@ -13,8 +13,11 @@ void physics2d_step(Physics2D* physics, double dt)
         Vec2* a = &obj->accel;
         FRect* rect = &obj->collider;
         FRect* sim_area_rect = &physics->simulation_area;
+        // Kinematic shit
         float dx = v->x * dt + (1/2.f) * a->x * dt * dt;
         float dy = v->y * dt + (1/2.f) * a->y * dt * dt;
+        v->x = v->x + a->x * dt;
+        v->y = v->y + a->y * dt;
         frect_translate(rect, dx, dy);
 
         // basic collision system

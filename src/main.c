@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
     PhysicsObject2D simulated_win = {
         .collider = frect_from_winrect(window_rect),
         .vel = vel,
-        .accel = {}
+        .accel = {.x = 0, .y = -99}
     };
 
     Physics2D sim;
@@ -120,11 +120,6 @@ int main(int argc, char *argv[])
         old_time = get_absolute_time();
 
         physics2d_step(&sim, dt);
-        // printf("deltatime: %lf\n", dt);
-        
-        // move window places
-        // kinematicm oment
-        
 
         SetWindowPos(
             window->handle, 
