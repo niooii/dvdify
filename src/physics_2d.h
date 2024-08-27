@@ -23,12 +23,27 @@ inline FRect frect_from_winrect(RECT in)
     return f;
 }
 
+inline void frect_translate(FRect* rect, float dx, float dy) 
+{
+    rect->top += dy;
+    rect->bottom += dy;
+    rect->left += dx;
+    rect->right += dx;
+}
+
+typedef struct PhysicsObject2D {
+    FRect collider;
+    Vec2 vel;
+    Vec2 accel;
+} PhysicsObject2D;
+
 typedef struct Physics2D {
     // Dynamic list of rectangle pointers
-    FRect** simulated_rects;
+    PhysicsObject2D** simulated_rects;
+    unsigned int simulated_rect_count;
     FRect simulation_area;
 } Physics2D;
 
 void physics2d_init(Physics2D* out_physics, FRect simulation_area);
 void physics2d_step(Physics2D* physics, double delta_time);
-void physics2d_add_object(Physics2D* physics, FRect* object);
+void physics2d_add_object(Physics2D* physics, PhysicsObject2D* object);
