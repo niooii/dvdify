@@ -2,12 +2,18 @@
 #include "util.h"
 #include "vec2.h"
 #include "physics_2d.h"
+
+// #define RAYGUI_IMPLEMENTATION
+// #include "raygui.h"
+
 #define ENABLE_DEBUG
 
 #define MAX_WINDOW_TITLE_LEN 64
+#define MAX_WINDOW_COUNT 128
 
 #define SPEED_RANDOMNESS 30
 #define BASE_SPEED 120
+#define MAX_MEMORY 1000000
 
 /*
  * geta list of windows
@@ -22,15 +28,18 @@ typedef struct WindowInfo {
 
 // Globals
 unsigned int found_win_count = 0;
-int max_win_count = 32;
 
 // EnumWindows accepts a callback function to run on each window found:
 BOOL window_callback(HWND hwnd, LPARAM lParam);
 
 int main(int argc, char *argv[]) 
 {
+    // Grab some system info
     unsigned int screen_w = GetSystemMetrics(SM_CXSCREEN);
     unsigned int screen_h = GetSystemMetrics(SM_CYSCREEN);
+
+    // Init gui
+
     FRect screen_rect = {
         .left = 0,
         .top = 0,
@@ -38,13 +47,8 @@ int main(int argc, char *argv[])
         .bottom = screen_h
     };
     utils_init();
-    printf("Enter window scan limit: ");
-    scanf("%d", &max_win_count);
 
-#ifdef ENABLE_DEBUG
-    printf("Max Windows Limit: %d", max_win_count);
-#endif
-    WindowInfo window_arr[max_win_count]; 
+    WindowInfo window_arr[MAX_WINDOW_COUNT]; 
     EnumWindows(window_callback, (LPARAM)window_arr);
     
     // Print options menu:
@@ -67,7 +71,7 @@ int main(int argc, char *argv[])
     while(TRUE)
     {
         printf("\nPlease enter a window selection: ");
-        scanf("%u", &win_selection);
+        scanf_s("%u", &win_selection);
 
         if(win_selection < found_win_count)
         {
@@ -81,6 +85,7 @@ int main(int argc, char *argv[])
     printf("Window selected: %s", window->window_name);
 #endif
 // STAGE 4
+    printf("bluh\n");
     ShowWindow(window->handle, SW_SHOWNORMAL);
 
     RECT window_rect;
@@ -89,7 +94,9 @@ int main(int argc, char *argv[])
     // A LOT OF WINDOWS API SHIT
     // TODO! get current window pos and store in the vec2
     // What are we doing chat
+    printf("pluh pluh\n");
     double old_time = get_absolute_time();
+    printf("awflawkjfla pluh pluh\n");
     
     float speed_variance = rand() % SPEED_RANDOMNESS + BASE_SPEED;
 
@@ -106,8 +113,12 @@ int main(int argc, char *argv[])
 
     Physics2D sim;
 
+    physics2d_init(&sim);
+    printf("yuh\n");
     physics2d_set_simulation_area(&sim, screen_rect);
+    printf("spluh\n");
     physics2d_add_object(&sim, &simulated_win);
+    printf("cuh\n");
 
 #ifdef ENABLE_DEBUG
     // printf("\nCurrent window coordinates [x:%f] [y:%f]", win_rect.left, win_rect.top);
@@ -137,7 +148,7 @@ int main(int argc, char *argv[])
 BOOL window_callback(HWND hwnd, LPARAM lParam)
 {
     WindowInfo* window_info_arr = (WindowInfo*)lParam;
-    if (found_win_count >= max_win_count)
+    if (found_win_count >= MAX_WINDOW_COUNT)
     {
         printf("TOO MANY WINDOWS \n");
         return FALSE;

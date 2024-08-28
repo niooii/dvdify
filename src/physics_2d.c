@@ -1,25 +1,34 @@
 #include "physics_2d.h"
 
-void physics2d_set_simulation_area(Physics2D* out_physics, FRect simulation_area)
+void physics2d_init(Physics2D* sim)
 {
-    out_physics->simulation_area = simulation_area;
+    sim->simulated_rect_count = 0;
+    sim->timescale = 1.f;
+    sim->simulated_rects = NULL;
 }
-void physics2d_step(Physics2D* physics, double dt)
+
+void physics2d_set_simulation_area(Physics2D* sim, FRect simulation_area)
 {
-    for (unsigned int i = 0; i < physics->simulated_rect_count; i++)
+    sim->simulation_area = simulation_area;
+}
+
+void physics2d_step(Physics2D* sim, double dt)
+{
+    dt = dt * sim->timescale;
+    for (unsigned int i = 0; i < sim->simulated_rect_count; i++)
     {
-        PhysicsObject2D* obj = physics->simulated_rects[i];
+        PhysicsObject2D* obj = sim->simulated_rects[i];
         Vec2* v = &obj->vel;
         Vec2* a = &obj->accel;
         FRect* rect = &obj->collider;
-        FRect* sim_area_rect = &physics->simulation_area;
+        FRect* sim_area_rect = &sim->simulation_area;
 
         // Kinematic shit
         float dx = v->x * dt + (1/2.f) * a->x * dt * dt;
         float dy = v->y * dt + (1/2.f) * a->y * dt * dt;
         v->x = v->x + a->x * dt;
         v->y = v->y + a->y * dt;
-        
+
         frect_translate(rect, dx, dy);
 
         // Keep objects within simulation area
@@ -47,12 +56,18 @@ void physics2d_step(Physics2D* physics, double dt)
         // TODO! handle collisions between colliders
     }
 }
-void physics2d_add_object(Physics2D* physics, PhysicsObject2D* object)
+
+void physics2d_add_object(Physics2D* sim, PhysicsObject2D* object)
 {
-    physics->simulated_rect_count++;
-    physics->simulated_rects = realloc(
-        physics->simulated_rects, 
-        physics->simulated_rect_count * sizeof(object)
+    sim->simulated_rect_count++;
+    sim->simulated_rects = realloc(
+        sim->simulated_rects, 
+        sim->simulated_rect_count * sizeof(object)
     );
-    physics->simulated_rects[physics->simulated_rect_count - 1] = object;
+    sim->simulated_rects[sim->simulated_rect_count - 1] = object;
+}
+
+void physics2d_set_timescale(Physics2D* sim, float timescale)
+{
+    sim->timescale = timescale;
 }

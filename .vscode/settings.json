@@ -6,6 +6,8 @@
         "xlocale": "c",
         "xutility": "c",
         "stdio.h": "c",
-        "vec2.h": "c"
+        "vec2.h": "c",
+        "physics_2d.h": "c",
+        "windows.h": "c"
     }
 }

@@ -3,7 +3,8 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/src/**"
+                "${workspaceFolder}/src/**",
+                "${workspaceFolder}/extern/**"
             ],
             "defines": [
                 "_DEBUG",
@@ -19,7 +20,8 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/src/**"
+                "${workspaceFolder}/src/**",
+                "${workspaceFolder}/extern/**"
             ],
             "defines": [
                 "_DEBUG",
