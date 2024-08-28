@@ -1,6 +1,6 @@
 #include "physics_2d.h"
 
-void physics2d_init(Physics2D* out_physics, FRect simulation_area)
+void physics2d_set_simulation_area(Physics2D* out_physics, FRect simulation_area)
 {
     out_physics->simulation_area = simulation_area;
 }
@@ -13,14 +13,16 @@ void physics2d_step(Physics2D* physics, double dt)
         Vec2* a = &obj->accel;
         FRect* rect = &obj->collider;
         FRect* sim_area_rect = &physics->simulation_area;
+
         // Kinematic shit
         float dx = v->x * dt + (1/2.f) * a->x * dt * dt;
         float dy = v->y * dt + (1/2.f) * a->y * dt * dt;
         v->x = v->x + a->x * dt;
         v->y = v->y + a->y * dt;
+        
         frect_translate(rect, dx, dy);
 
-        // basic collision system
+        // Keep objects within simulation area
         if (rect->left <= sim_area_rect->left)
         {
             rect->left = sim_area_rect->left;
@@ -41,6 +43,8 @@ void physics2d_step(Physics2D* physics, double dt)
             rect->bottom = sim_area_rect->bottom;
             v->y *= -1;
         }
+
+        // TODO! handle collisions between colliders
     }
 }
 void physics2d_add_object(Physics2D* physics, PhysicsObject2D* object)

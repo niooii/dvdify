@@ -101,12 +101,12 @@ int main(int argc, char *argv[])
     PhysicsObject2D simulated_win = {
         .collider = frect_from_winrect(window_rect),
         .vel = vel,
-        .accel = {.x = 0, .y = -99}
+        // .accel = {.x = 0, .y = -99}
     };
 
     Physics2D sim;
 
-    physics2d_init(&sim, screen_rect);
+    physics2d_set_simulation_area(&sim, screen_rect);
     physics2d_add_object(&sim, &simulated_win);
 
 #ifdef ENABLE_DEBUG
@@ -115,8 +115,7 @@ int main(int argc, char *argv[])
 
     while (1)
     {
-        // K YOURSELF NOW !! 
-        float dt = get_absolute_time() - old_time; // why tho its in seconds already
+        float dt = get_absolute_time() - old_time;
         old_time = get_absolute_time();
 
         physics2d_step(&sim, dt);

@@ -44,6 +44,6 @@ typedef struct Physics2D {
     FRect simulation_area;
 } Physics2D;
 
-void physics2d_init(Physics2D* out_physics, FRect simulation_area);
+void physics2d_set_simulation_area(Physics2D* out_physics, FRect simulation_area);
 void physics2d_step(Physics2D* physics, double delta_time);
 void physics2d_add_object(Physics2D* physics, PhysicsObject2D* object);
