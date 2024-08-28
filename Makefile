@@ -1,7 +1,7 @@
 # CLAUDE AI GENERATED DECIPHER THIS SHIT LATER
 
 CC := clang
-CFLAGS := -std=c99 -Werror -Wall -g -O0
+CFLAGS := -std=c99 -Werror -Wall -g -Ofast
 TARGET := dvdify
 LIBDIR := lib
 SRCDIR := src

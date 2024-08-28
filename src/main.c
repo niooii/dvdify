@@ -12,7 +12,7 @@
 #define MAX_WINDOW_COUNT 128
 
 #define SPEED_RANDOMNESS 30
-#define BASE_SPEED 120
+#define BASE_SPEED 1200
 #define MAX_MEMORY 1000000
 
 /*
@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
     PhysicsObject2D simulated_win = {
         .collider = frect_from_winrect(window_rect),
         .vel = vel,
-        // .accel = {.x = 0, .y = -99}
+        // .accel = {.x = 999, .y = 999}
     };
 
     Physics2D sim;

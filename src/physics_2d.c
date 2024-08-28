@@ -28,6 +28,10 @@ void physics2d_step(Physics2D* sim, double dt)
         float dy = v->y * dt + (1/2.f) * a->y * dt * dt;
         v->x = v->x + a->x * dt;
         v->y = v->y + a->y * dt;
+        
+        // Temp drag system (velocity degredation)
+        // v->x *= 0.9999;
+        // v->y *= 0.9999;
 
         frect_translate(rect, dx, dy);
 
