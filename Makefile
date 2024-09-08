@@ -15,8 +15,6 @@ LIBS := $(wildcard $(LIBDIR)/*.lib)
 # Generate .o file names in BUILDDIR
 OBJ_FILES := $(patsubst $(SRCDIR)/%.c,$(BUILDDIR)/%.o,$(SOURCES))
 
-# Debug information
-
 .PHONY: all clean run copy-dlls
 
 all: $(TARGET)
