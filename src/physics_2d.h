@@ -1,7 +1,6 @@
 #pragma once
 
 #include <Windows.h>
-#include <stdlib.h>
 #include "vec2.h"
 
 typedef struct FRect {
@@ -39,7 +38,6 @@ typedef struct PhysicsObject2D {
 } PhysicsObject2D;
 
 typedef struct Physics2D {
-    // Dynamic list of rectangle pointers
     PhysicsObject2D** simulated_rects;
     unsigned int simulated_rect_count;
     FRect simulation_area;
