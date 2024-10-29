@@ -61,14 +61,16 @@ void physics2d_step(Physics2D* sim, double dt)
     }
 }
 
-void physics2d_add_object(Physics2D* sim, PhysicsObject2D* object)
+PhysicsObject2D* physics2d_add_object(Physics2D* sim)
 {
     sim->simulated_rect_count++;
     sim->simulated_rects = realloc(
         sim->simulated_rects, 
-        sim->simulated_rect_count * sizeof(object)
+        sim->simulated_rect_count * sizeof(PhysicsObject2D*)
     );
-    sim->simulated_rects[sim->simulated_rect_count - 1] = object;
+    sim->simulated_rects[sim->simulated_rect_count - 1] = malloc(sizeof(PhysicsObject2D));
+    memset(sim->simulated_rects[sim->simulated_rect_count - 1], 0, sizeof(PhysicsObject2D));
+    return sim->simulated_rects[sim->simulated_rect_count - 1];
 }
 
 void physics2d_set_timescale(Physics2D* sim, float timescale)

@@ -1,11 +1,11 @@
 CC := clang
-CFLAGS := -std=c99 -Werror -Wall -Ofast
+CFLAGS := -std=c99 -Werror -Wall -Wno-unused-variable -Wno-deprecated-declarations -g -O0
 TARGET := dvdify
 SRCDIR := src
 LIBDIR := libs
 BUILDDIR := build
 LINK_FLAGS := -luser32 -l$(LIBDIR)/window_watcher.lib
-INCLUDES := -I$(SRCDIR) -I$(LIBDIR) -Iextern
+INCLUDES := -I$(SRCDIR) -Iincludes -I$(LIBDIR) -Iextern
 
 # Find all .c files in SRCDIR
 SOURCES := $(wildcard $(SRCDIR)/*.c)
@@ -15,7 +15,7 @@ LIBS := $(wildcard $(LIBDIR)/*.lib)
 # Generate .o file names in BUILDDIR
 OBJ_FILES := $(patsubst $(SRCDIR)/%.c,$(BUILDDIR)/%.o,$(SOURCES))
 
-.PHONY: all clean run copy-dlls
+.PHONY: all clean run
 
 all: $(TARGET)
 
@@ -25,7 +25,7 @@ run: all
 $(BUILDDIR):
 	if not exist $(BUILDDIR) mkdir $(BUILDDIR)
 
-copy-dlls: | $(BUILDDIR)
+copy-dlls: $(DLLS) | $(BUILDDIR)
 	@echo DLLs: $(DLLS)
 	$(foreach dll,$(DLLS),copy "$(shell cd)\\$(subst /,\,$(dll))" "$(shell cd)\\$(BUILDDIR)\\")
 	
@@ -35,7 +35,7 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.c | $(BUILDDIR)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 # Rule to link object files into the final executable
-$(TARGET): $(OBJ_FILES) | copy-dlls
+$(TARGET): $(OBJ_FILES)
 	$(CC) $(CFLAGS) $(LINK_FLAGS) $^ -o $(BUILDDIR)/$(TARGET).exe
 
 clean:

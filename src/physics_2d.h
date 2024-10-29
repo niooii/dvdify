@@ -48,5 +48,5 @@ typedef struct Physics2D {
 void physics2d_init(Physics2D* sim);
 void physics2d_set_simulation_area(Physics2D* sim, FRect simulation_area);
 void physics2d_step(Physics2D* sim, double delta_time);
-void physics2d_add_object(Physics2D* sim, PhysicsObject2D* object);
+PhysicsObject2D* physics2d_add_object(Physics2D* sim);
 void physics2d_set_timescale(Physics2D* sim, float timescale);
